@@ -16,7 +16,13 @@ return require('packer').startup(function(use)
   use ('mbbill/undotree')
   use ('tpope/vim-fugitive')
   use ('christoomey/vim-tmux-navigator')
-  use ( "zbirenbaum/copilot.lua" )
+  use {
+	  "ThePrimeagen/refactoring.nvim",
+	  requires = {
+		  {"nvim-lua/plenary.nvim"},
+		  {"nvim-treesitter/nvim-treesitter"}
+	  }
+  }
   use {
 	  'VonHeikemen/lsp-zero.nvim',
 	  requires = {
