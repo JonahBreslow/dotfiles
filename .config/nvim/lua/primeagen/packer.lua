@@ -16,9 +16,10 @@ return require('packer').startup(function(use)
   use ('mbbill/undotree')
   use ('tpope/vim-fugitive')
   use ('christoomey/vim-tmux-navigator')
+  use ( "zbirenbaum/copilot.lua" )
   use {
 	  'VonHeikemen/lsp-zero.nvim',
-	  requires = { 
+	  requires = {
 		  -- LSP Support
 		{'neovim/nvim-lspconfig'},
 		{'williamboman/mason.nvim'},
@@ -35,7 +36,7 @@ return require('packer').startup(function(use)
 		-- Snippets
 		{'L3MON4D3/LuaSnip'},
 		{'rafamadriz/friendly-snippets'},
-	}
+	};
 }
 end)
 
