@@ -15,6 +15,7 @@ return require('packer').startup(function(use)
   use ('theprimeagen/harpoon')
   use ('mbbill/undotree')
   use ('tpope/vim-fugitive')
+  use { "zbirenbaum/copilot.lua" }
   use ('christoomey/vim-tmux-navigator')
   use {
 	  "ThePrimeagen/refactoring.nvim",
