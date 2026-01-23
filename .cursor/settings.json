@@ -1,0 +1,196 @@
+{
+	"[python]": {
+		"editor.formatOnType": true,
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
+	"terminal.integrated.defaultProfile.osx": "zsh",
+	"workbench.editor.titleScrollbarSizing": "large",
+	"vim.leader": "<Space>",
+	"vim.normalModeKeyBindingsNonRecursive": [
+		{
+			"before": ["leader", "r", "s"],
+			"commands": ["editor.action.rename"]
+		},
+		{
+			"before": ["leader", "h"],
+			"commands": [":bprevious"]
+		},
+		{
+			"before": ["leader", "l"],
+			"commands": [":bnext"]
+		},
+		{
+			"before": ["leader", "n", "e"],
+			"commands": ["workbench.action.nextEditor"]
+		},
+		{
+			"before": ["leader", "b", "e"],
+			"commands": ["workbench.action.previousEditor"]
+		},
+		{
+			"before": ["leader", "v"],
+			"commands": [":vsplit"]
+		},
+		{
+			"before": ["leader", "s"],
+			"commands": [":split"]
+		},
+		{
+			"before": ["leader", "h"],
+			"commands": ["workbench.action.focusLeftGroup"]
+		},
+		{
+			"before": ["leader", "j"],
+			"commands": ["workbench.action.focusBelowGroup"]
+		},
+		{
+			"before": ["leader", "k"],
+			"commands": ["workbench.action.focusAboveGroup"]
+		},
+		{
+			"before": ["leader", "l"],
+			"commands": ["workbench.action.focusRightGroup"]
+		},
+		{
+			"before": ["leader", "w"],
+			"commands": [":w!"]
+		},
+		{
+			"before": ["leader", "q"],
+			"commands": [":q!"]
+		},
+		{
+			"before": ["leader", "x"],
+			"commands": [":x!"]
+		},
+		{
+			"before": ["[", "d"],
+			"commands": ["editor.action.marker.prev"]
+		},
+		{
+			"before": ["]", "d"],
+			"commands": ["editor.action.marker.next"]
+		},
+		{
+			"before": ["leader", "f"],
+			"commands": ["workbench.action.quickOpen"]
+		},
+		{
+			"before": ["leader", "p"],
+			"commands": ["editor.action.formatDocument"]
+		},
+		{
+			"before": ["g", "h"],
+			"commands": ["editor.action.showDefinitionPreviewHover"]
+		},
+		{
+			"before": ["g", "u"],
+			"commands": ["editor.action.referenceSearch.trigger"]
+		},
+		{
+			"commands": ["editor.action.referenceSearch.trigger"]
+		},
+		{
+			"before": ["leader", "c"],
+			"commands": ["editor.action.commentLine"]
+		}
+	],
+	"vim.insertModeKeyBindings": [
+		{
+			"before": ["j", "k"],
+			"after": ["<esc>"]
+		}
+	],
+	"vim.visualModeKeyBindings": [
+		{
+			"before": ["<"],
+			"commands": ["editor.action.outdentLines"]
+		},
+		{
+			"before": [">"],
+			"commands": ["editor.action.indentLines"]
+		},
+		{
+			"before": ["J"],
+			"commands": ["editor.action.moveLinesDownAction"]
+		},
+		{
+			"before": ["K"],
+			"commands": ["editor.action.moveLinesUpAction"]
+		},
+		{
+			"before": ["leader", "c"],
+			"commands": ["editor.action.commentLine"]
+		}
+	],
+	"editor.lineNumbers": "relative",
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.scrollBeyondLastLine": false,
+	"editor.cursorSurroundingLines": 10,
+	"editor.inlineSuggest.enabled": true,
+	"github.copilot.enable": {
+		"*": true,
+		"plaintext": false,
+		"markdown": false,
+		"scminput": false,
+		"yaml": true,
+		"toml": true,
+		"go": true,
+		"css": false
+	},
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"files.autoSaveDelay": 10,
+	"files.autoSave": "afterDelay",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[go]": {
+		"editor.defaultFormatter": "golang.go"
+	},
+	"workbench.panel.defaultLocation": "right",
+	"go.gopath": "/Users/jonah.breslow/go",
+	"go.toolsGopath": "/Users/jonah.breslow/go",
+	"go.toolsManagement.autoUpdate": true,
+	"[sql]": {
+		"editor.defaultFormatter": "mtxr.sqltools"
+	},
+	"git.openRepositoryInParentFolders": "never",
+	"liveServer.settings.donotShowInfoMsg": true,
+	"gitlens.graph.minimap.enabled": false,
+	"liveServer.settings.donotVerifyTags": true,
+	"breadcrumbs.enabled": false,
+	"editor.minimap.enabled": false,
+	"workbench.tips.enabled": false,
+	"workbench.colorTheme": "Dracula",
+	"[kotlin]": {
+		"editor.defaultFormatter": "fwcd.kotlin"
+	},
+	"window.zoomLevel": 1,
+	"diffEditor.ignoreTrimWhitespace": false,
+	"github.copilot.editor.enableAutoCompletions": true,
+	"jupyter.askForKernelRestart": false,
+	"remote.SSH.remotePlatform": {
+		"coder-vscode.hqb2o5pn5aqgi.pit-1.try.coder.app--jonah--jonah": "linux"
+	},
+	"remote.SSH.connectTimeout": 1800,
+	"redhat.telemetry.enabled": false,
+	"cursor.cpp.disabledLanguages": ["plaintext", "markdown", "scminput", "css"],
+	"kotlin.languageServer.enabled": false,
+	"kotlin.debugAdapter.enabled": false,
+	"notebook.cellToolbarLocation": {
+		"default": "right",
+		"jupyter-notebook": "left"
+	},
+	"java.format.onType.enabled": false,
+	"terminal.integrated.allowedLinkSchemes": [
+		"file",
+		"http",
+		"https",
+		"mailto",
+		"vscode",
+		"vscode-insiders",
+		"docker-desktop"
+	]
+}

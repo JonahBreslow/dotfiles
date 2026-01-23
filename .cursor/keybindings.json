@@ -1,0 +1,151 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+	// FILE TREE GOODNESS
+	{
+		"key": "n",
+		"command": "explorer.newFile",
+		"when": "filesExplorerFocus && !inputFocus"
+	},
+	{
+		"command": "renameFile",
+		"key": "r",
+		"when": "filesExplorerFocus && !inputFocus"
+	},
+	{
+		"key": "shift+n",
+		"command": "explorer.newFolder",
+		"when": "explorerViewletFocus"
+	},
+	{
+		"command": "deleteFile",
+		"key": "d",
+		"when": "filesExplorerFocus && !inputFocus"
+	},
+
+	{
+		"key": "cmd+n",
+		"command": "extension.advancedNewFile",
+		"when": "!terminalFocus"
+	},
+	{
+		"key": "alt+cmd+n",
+		"command": "-extension.advancedNewFile"
+	},
+	{
+		"key": "cmd+b",
+		"command": "workbench.view.explorer",
+		"when": "!explorerViewletVisible && !searchViewletVisible && !remoteExtension && !notebookEditorFocused && editorLangId != 'notebook'",
+		"sequence": [
+			"workbench.files.action.toggleSidebarVisibility",
+			"workbench.view.explorer"
+		]
+	},
+	{
+		"key": "enter",
+		"command": "list.select",
+		"when": "explorerViewletFocus && !explorerResourceIsFolder && !inputFocus"
+	},
+	{
+		"key": "ctrl+shift+a",
+		"command": "workbench.action.terminal.focusNext",
+		"when": "terminalFocus"
+	},
+	{
+		"key": "ctrl+shift+b",
+		"command": "workbench.action.terminal.focusPrevious",
+		"when": "terminalFocus"
+	},
+	{
+		"key": "ctrl+shift+j",
+		"command": "workbench.action.togglePanel"
+	},
+	{
+		"key": "ctrl+shift+n",
+		"command": "workbench.action.terminal.new",
+		"when": "terminalFocus"
+	},
+	{
+		"key": "ctrl+shift+c",
+		"command": "workbench.action.terminal.kill",
+		"when": "terminalFocus"
+	},
+	{
+		"key": "ctrl+shift+l",
+		"command": "workbench.action.nextEditor"
+	},
+	{
+		"key": "ctrl+shift+h",
+		"command": "workbench.action.previousEditor"
+	},
+	{
+		"key": "cmd+g",
+		"command": "-editor.action.nextMatchFindAction",
+		"when": "editorFocus"
+	},
+	{
+		"key": "cmd+g",
+		"command": "workbench.view.scm",
+		"when": "!scmViewletVisible && !searchViewletVisible && !remoteExtension && !notebookEditorFocused && editorLangId != 'notebook'",
+		"sequence": [
+			"workbench.files.action.toggleSidebarVisibility",
+			"workbench.view.scm"
+		]
+	},
+	{
+		"key": "alt+cmd+h",
+		"command": "workbench.action.terminal.resizePaneLeft",
+		"when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported",
+		"args": {
+			"multiplier": 3
+		}
+	},
+	{
+		"key": "alt+cmd+l",
+		"command": "workbench.action.terminal.resizePaneRight",
+		"when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported",
+		"args": {
+			"size": 10
+		}
+	},
+	{
+		"key": "cmd+m cmd+d",
+		"command": "markdown.showPreview",
+		"when": "!notebookEditorFocused && editorLangId == 'markdown'"
+	},
+	{
+		"key": "ctrl+cmd+l",
+		"command": "workbench.action.moveEditorToNextGroup"
+	},
+	{
+		"key": "ctrl+cmd+h",
+		"command": "workbench.action.moveEditorToPreviousGroup"
+	},
+	{
+		"key": "ctrl+cmd+j",
+		"command": "workbench.action.moveEditorToAboveGroup"
+	},
+	{
+		"key": "ctrl+cmd+k",
+		"command": "workbench.action.moveEditorToBelowGroup"
+	},
+	{
+		"key": "ctrl+cmd+m",
+		"command": "workbench.action.maximizeEditor"
+	},
+	{
+		"key": "ctrl+cmd+n",
+		"command": "workbench.action.evenEditorWidths"
+	},
+	{
+		"key": "ctrl+z",
+		"command": "workbench.action.toggleZenMode"
+	},
+	{
+		"key": "cmd+p",
+		"command": "workbench.action.quickOpen"
+	},
+	{
+		"key": "cmd+p",
+		"command": "-workbench.action.quickOpen"
+	}
+]
