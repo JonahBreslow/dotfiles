@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+DOTFILES_DIR="$HOME/dev/dotfiles"
+STATE_DIR="$HOME/.local/state/dotfiles-sync"
+
+# Home-directory dotfiles: repo-relative path -> same name in $HOME
+HOME_FILES=(
+    .zshrc
+    .bash_profile
+    .bashrc
+    .exports
+    .extra
+    .functions
+    .gitconfig
+    .gitignore
+    .inputrc
+    .editorconfig
+    .vimrc
+    .tmux.conf
+)
+
+# XDG config directories: repo-relative path -> same in $HOME
+XDG_DIRS=(
+    .config/nvim
+    .config/alacritty
+    .config/skhd
+    .config/yabai
+)
+
+detect_drift() {
+    local drifted=()
+
+    for file in "${HOME_FILES[@]}"; do
+        local repo_path="$DOTFILES_DIR/$file"
+        local live_path="$HOME/$file"
+
+        # Skip if either side doesn't exist
+        [ -f "$repo_path" ] || continue
+        [ -f "$live_path" ] || continue
+
+        # Skip if live file is a symlink into the dotfiles repo
+        if [ -L "$live_path" ]; then
+            local target
+            target="$(readlink "$live_path")"
+            [[ "$target" == "$DOTFILES_DIR"* ]] && continue
+        fi
+
+        if ! diff -q "$repo_path" "$live_path" > /dev/null 2>&1; then
+            drifted+=("$file")
+        fi
+    done
+
+    for dir in "${XDG_DIRS[@]}"; do
+        local repo_path="$DOTFILES_DIR/$dir"
+        local live_path="$HOME/$dir"
+
+        [ -d "$repo_path" ] || continue
+        [ -d "$live_path" ] || continue
+
+        # Find files that differ within the directory
+        while IFS= read -r diffline; do
+            local diffed_file
+            diffed_file="${diffline#Files }"
+            diffed_file="${diffed_file%% and *}"
+            diffed_file="${diffed_file#$DOTFILES_DIR/}"
+            drifted+=("$diffed_file")
+        done < <(diff -rq "$repo_path" "$live_path" 2>/dev/null | grep "^Files ")
+    done
+
+    printf '%s\n' "${drifted[@]}"
+}
