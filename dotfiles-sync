@@ -70,6 +70,119 @@ detect_drift() {
     printf '%s\n' "${drifted[@]}"
 }
 
+resolve_files() {
+    local files=("$@")
+    local committed_to_repo=()
+
+    for file in "${files[@]}"; do
+        echo ""
+        echo "=== $file ==="
+        echo "  [r] Copy live → repo"
+        echo "  [l] Restore from repo → live"
+        echo "  [d] Show full diff"
+        echo "  [s] Skip"
+        echo ""
+
+        while true; do
+            read -p "Action for $file: " -n 1 action
+            echo ""
+
+            case "$action" in
+                r)
+                    cp "$HOME/$file" "$DOTFILES_DIR/$file"
+                    echo "  Copied live → repo"
+                    committed_to_repo+=("$file")
+                    break
+                    ;;
+                l)
+                    cp "$DOTFILES_DIR/$file" "$HOME/$file"
+                    echo "  Restored from repo → live"
+                    break
+                    ;;
+                d)
+                    ${PAGER:-less} <(diff -u "$DOTFILES_DIR/$file" "$HOME/$file")
+                    ;;
+                s)
+                    echo "  Skipped"
+                    break
+                    ;;
+                *)
+                    echo "  Invalid option. Use r/l/d/s."
+                    ;;
+            esac
+        done
+    done
+
+    if [ ${#committed_to_repo[@]} -gt 0 ]; then
+        echo ""
+        read -p "Commit ${#committed_to_repo[@]} file(s) to dotfiles repo? (y/n) " -n 1
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            cd "$DOTFILES_DIR"
+            git add "${committed_to_repo[@]}"
+            local filenames
+            filenames="$(printf '%s ' "${committed_to_repo[@]}")"
+            git commit -m "sync: update ${filenames% }"
+            echo "Committed."
+        else
+            echo "Changes copied but not committed."
+        fi
+    fi
+}
+
+interactive_mode() {
+    local drifted
+    drifted="$(detect_drift)"
+
+    if [ -z "$drifted" ]; then
+        echo "All dotfiles in sync."
+        exit 0
+    fi
+
+    local count
+    count="$(echo "$drifted" | wc -l | tr -d ' ')"
+    echo "$count file(s) out of sync."
+    echo ""
+
+    # Check for fzf availability
+    local use_fzf=true
+    if ! command -v fzf &> /dev/null; then
+        echo "fzf not found — falling back to plain mode."
+        use_fzf=false
+    fi
+
+    local selected_files=()
+
+    if [ "$use_fzf" = true ]; then
+        local preview_cmd
+        if command -v bat &> /dev/null; then
+            preview_cmd="diff -u '$DOTFILES_DIR/{}' '$HOME/{}' | bat --style=plain --language=diff --color=always"
+        else
+            preview_cmd="diff -u --color=always '$DOTFILES_DIR/{}' '$HOME/{}'"
+        fi
+
+        while IFS= read -r file; do
+            [ -n "$file" ] && selected_files+=("$file")
+        done < <(echo "$drifted" | fzf --multi \
+            --header="TAB to select files, ENTER to resolve" \
+            --preview="$preview_cmd" \
+            --preview-window=right:60%)
+    else
+        # Plain fallback: list all drifted files
+        echo "Drifted files:"
+        echo "$drifted"
+        echo ""
+        mapfile -t selected_files <<< "$drifted"
+    fi
+
+    if [ ${#selected_files[@]} -eq 0 ]; then
+        echo "No files selected."
+        exit 0
+    fi
+
+    resolve_files "${selected_files[@]}"
+}
+
 check_mode() {
     mkdir -p "$STATE_DIR"
 
@@ -104,9 +217,7 @@ case "${1:-}" in
         exit $?
         ;;
     "")
-        # Interactive mode (Task 3)
-        echo "Interactive mode not yet implemented"
-        exit 0
+        interactive_mode
         ;;
     *)
         echo "Usage: dotfiles-sync [--check]"
