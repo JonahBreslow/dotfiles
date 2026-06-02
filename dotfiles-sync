@@ -100,7 +100,7 @@ resolve_files() {
                     break
                     ;;
                 d)
-                    ${PAGER:-less} <(diff -u "$DOTFILES_DIR/$file" "$HOME/$file")
+                    diff -u "$DOTFILES_DIR/$file" "$HOME/$file" | ${PAGER:-less}
                     ;;
                 s)
                     echo "  Skipped"
@@ -119,7 +119,7 @@ resolve_files() {
         echo ""
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             cd "$DOTFILES_DIR"
-            git add "${committed_to_repo[@]}"
+            git add -- "${committed_to_repo[@]}"
             local filenames
             filenames="$(printf '%s ' "${committed_to_repo[@]}")"
             git commit -m "sync: update ${filenames% }"
@@ -156,9 +156,9 @@ interactive_mode() {
     if [ "$use_fzf" = true ]; then
         local preview_cmd
         if command -v bat &> /dev/null; then
-            preview_cmd="diff -u '$DOTFILES_DIR/{}' '$HOME/{}' | bat --style=plain --language=diff --color=always"
+            preview_cmd="diff -u \"$DOTFILES_DIR/{}\" \"$HOME/{}\" | bat --style=plain --language=diff --color=always"
         else
-            preview_cmd="diff -u --color=always '$DOTFILES_DIR/{}' '$HOME/{}'"
+            preview_cmd="diff -u --color=always \"$DOTFILES_DIR/{}\" \"$HOME/{}\""
         fi
 
         while IFS= read -r file; do
