@@ -69,3 +69,47 @@ detect_drift() {
 
     printf '%s\n' "${drifted[@]}"
 }
+
+check_mode() {
+    mkdir -p "$STATE_DIR"
+
+    local drifted
+    drifted="$(detect_drift)"
+    local count
+    count="$(echo "$drifted" | grep -c .)"
+
+    # Write log
+    {
+        echo "--- Check: $(date) ---"
+        if [ "$count" -gt 0 ]; then
+            echo "Drifted files ($count):"
+            echo "$drifted"
+        else
+            echo "All dotfiles in sync."
+        fi
+        echo ""
+    } >> "$STATE_DIR/last-check.log"
+
+    if [ "$count" -gt 0 ]; then
+        osascript -e "display notification \"$count file(s) have diverged from ~/dev/dotfiles\" with title \"Dotfiles Out of Sync\" sound name \"Basso\""
+        return 1
+    fi
+
+    return 0
+}
+
+case "${1:-}" in
+    --check)
+        check_mode
+        exit $?
+        ;;
+    "")
+        # Interactive mode (Task 3)
+        echo "Interactive mode not yet implemented"
+        exit 0
+        ;;
+    *)
+        echo "Usage: dotfiles-sync [--check]"
+        exit 2
+        ;;
+esac
