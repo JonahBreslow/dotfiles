@@ -9,10 +9,16 @@ function doIt() {
 		--exclude ".DS_Store" \
 		--exclude ".osx" \
 		--exclude "bootstrap.sh" \
+		--exclude "brew.sh" \
+		--exclude "init/" \
+		--exclude ".cursor/" \
 		--exclude "README.md" \
 		--exclude "LICENSE-MIT.txt" \
+		--exclude "dotfiles-sync" \
+		--exclude "dotfiles-sync.plist" \
+		--exclude "docs/" \
 		-avh --no-perms . ~;
-	source ~/.bash_profile;
+	source ~/.zshrc;
 }
 
 if [ "$1" = "--force" -o "$1" = "-f" ]; then
@@ -80,9 +86,39 @@ if [ "$1" != "--skip-extensions" ]; then
 fi
 
 # oh my zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > /dev/null 2>&1
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended > /dev/null 2>&1
+fi
 
 # PL10K
-git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k > /dev/null 2>&1
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions > /dev/null 2>&1
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting > /dev/null 2>&1
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ] || \
+	git clone https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k" > /dev/null 2>&1
+[ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] || \
+	git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions" > /dev/null 2>&1
+[ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] || \
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" > /dev/null 2>&1
+
+# dotfiles-sync: drift detection agent
+function setupDotfilesSync() {
+	local STATE_DIR="$HOME/.local/state/dotfiles-sync"
+	local PLIST_SRC="$(cd "$(dirname "${BASH_SOURCE}")"; pwd)/dotfiles-sync.plist"
+	local PLIST_DST="$HOME/Library/LaunchAgents/com.jonah.dotfiles-sync.plist"
+
+	mkdir -p "$STATE_DIR"
+
+	if [ -f "$PLIST_SRC" ]; then
+		# Unload existing if present (ignore errors if not loaded)
+		launchctl unload "$PLIST_DST" 2>/dev/null
+
+		# Symlink the plist
+		ln -sf "$PLIST_SRC" "$PLIST_DST"
+
+		# Load the agent
+		launchctl load "$PLIST_DST"
+		echo "dotfiles-sync launchd agent installed and loaded."
+	fi
+}
+
+setupDotfilesSync;
+unset setupDotfilesSync;
