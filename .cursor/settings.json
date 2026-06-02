@@ -149,7 +149,10 @@
 	"[go]": {
 		"editor.defaultFormatter": "golang.go"
 	},
-	"workbench.panel.defaultLocation": "right",
+	"workbench.panel.defaultLocation": "bottom",
+	"workbench.sideBar.location": "left",
+	"workbench.startupEditor": "newUntitledFile",
+	"workbench.panel.secondarySideBar.location": "right",
 	"go.gopath": "/Users/jonah.breslow/go",
 	"go.toolsGopath": "/Users/jonah.breslow/go",
 	"go.toolsManagement.autoUpdate": true,
@@ -169,6 +172,7 @@
 	},
 	"window.zoomLevel": 1,
 	"diffEditor.ignoreTrimWhitespace": false,
+	"diffEditor.renderSideBySide": true,
 	"github.copilot.editor.enableAutoCompletions": true,
 	"jupyter.askForKernelRestart": false,
 	"remote.SSH.remotePlatform": {
@@ -192,5 +196,6 @@
 		"vscode",
 		"vscode-insiders",
 		"docker-desktop"
-	]
+	],
+	"cursor.composer.usageSummaryDisplay": "always"
 }
