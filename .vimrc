@@ -25,9 +25,11 @@ set ruler
 
 " Fast key repeat - critical for smooth scrolling with j/k
 set ttimeoutlen=10
-set timeoutlen=1000
+set timeoutlen=100
 
 " Performance optimizations
 set ttyfast
 set lazyredraw
 
+
+set scrolloff=5
